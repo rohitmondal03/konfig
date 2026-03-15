@@ -1,0 +1,12 @@
+{
+  "name": "@repo/shared",
+  "version": "0.0.1",
+  "main": "src/index.ts",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "nanoid": "^5.1.6"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0"
+  }
+}
