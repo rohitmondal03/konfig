@@ -12,7 +12,8 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
     "api:dev": "turbo run dev --filter=api",
-    "sdk:build": "turbo run build --filter=@konfig/sdk"
+    "sdk:build": "turbo run build --filter=@konfig/sdk",
+    "web:dev": "turbo run dev --filter=web"
   },
   "devDependencies": {
     "prettier": "^3.7.4",
