@@ -1,4 +1,3 @@
-import * as React from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export function SDKInstall() {
@@ -17,7 +16,7 @@ export function SDKInstall() {
 
         <div className="flex-1 w-full max-w-md bg-black/50 border border-zinc-100 rounded-2xl p-6 shadow-2xl backdrop-blur-sm">
           <Tabs defaultValue="npm" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 bg-white/5 p-1 rounded-lg mb-6 border-zinc-100">
+            <TabsList className="grid w-full grid-cols-3 bg-white/5 rounded-lg mb-6 border border-zinc-500 p-0.5">
               <TabsTrigger value="npm" className="data-[state=active]:bg-white/10 data-[state=active]:text-white text-white/60">npm</TabsTrigger>
               <TabsTrigger value="pnpm" className="data-[state=active]:bg-white/10 data-[state=active]:text-white text-white/60">pnpm</TabsTrigger>
               <TabsTrigger value="yarn" className="data-[state=active]:bg-white/10 data-[state=active]:text-white text-white/60">yarn</TabsTrigger>

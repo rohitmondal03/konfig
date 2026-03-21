@@ -7,4 +7,10 @@ export const API_KEY_PREFIX = "konfig_sk"
 export const KEY_ID_LENGTH = 8;
 export const KEY_SECRET_LENGTH = 16;
 
-export const AUTH_HEADER_PREFIX = "Bearer "
+export const AUTH_HEADER_PREFIX = "Bearer ";
+
+export const URLS = {
+  docs: process.env.NEXT_PUBLIC_DOCS_URL! || "http://localhost:3001",
+  dashoard: "/dashboard",
+  github: "https://github.com/rohitmondal03/konfig"
+}

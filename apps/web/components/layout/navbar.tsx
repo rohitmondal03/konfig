@@ -4,15 +4,18 @@ import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 import { Icon } from "@/components/shared/icon"
 import { Logo } from "../shared/logo"
+import { URLS } from "@repo/shared"
 
 const NAV_LINKS = [
   {
-    href: "/docs",
+    href: URLS.docs,
+    target: "_blank",
     title: "Docs",
   },
   {
-    href: "https://github.com",
+    href: URLS.github,
     title: "Github",
+    target: "_blank",
     icon: <Icon icon={GithubIcon} fill="#fff" />
   }
 ]
@@ -33,6 +36,7 @@ export function Navbar() {
                 buttonVariants({ variant: link.icon ? "secondary" : "link" }),
                 "hover:text-white transition-colors gap-2"
               )}
+              target={link.target}
             >
               {link.icon} {link.title}
             </Link>

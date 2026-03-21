@@ -1,22 +1,26 @@
-import { GithubIcon } from "@hugeicons/core-free-icons"
+import Link from "next/link"
+import { GithubIcon, Target } from "@hugeicons/core-free-icons"
 import { Icon } from "../shared/icon"
 import { Logo } from "../shared/logo"
-import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "../ui/button"
+import { URLS } from "@repo/shared"
 
 const FOOTER_LINKS = [
   {
-    href: "/docs",
+    href: URLS.docs,
     title: "Docs",
+    target: "_blank"
   },
   {
-    href: "/dashboard",
+    href: URLS.dashoard,
     title: "Dashboard",
+    target: "_self"
   },
   {
-    href: "https://github.com",
+    href: URLS.github,
     title: "Github",
+    target: "_blank",
     icon: <Icon icon={GithubIcon} fill="#fff" />
   },
 ]
@@ -30,11 +34,12 @@ export function Footer() {
         <div className="flex flex-wrap items-center justify-center gap-x-4 text-sm">
           {FOOTER_LINKS.map((link) => (
             <Link
+              key={link.href}
               href={link.href}
               className={cn(
                 buttonVariants({ variant: link.icon ? "secondary" : "ghost" }),
               )}
-              target={link.icon ? "_blank" : "_self"}
+              target={link.target}
             >
               {link.icon} {link.title}
             </Link>

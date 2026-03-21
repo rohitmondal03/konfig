@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
+import { URLS } from "@repo/shared"
 
 export function CTASection() {
   return (
@@ -26,11 +27,12 @@ export function CTASection() {
           Get Started
         </Link>
         <Link
-          href={"/docs"}
+          href={URLS.docs}
           className={cn(
             buttonVariants({ variant: "secondary", size: "lg" }),
             "text-lg p-6"
           )}
+          target="_blank"
         >
           View Docs
         </Link>

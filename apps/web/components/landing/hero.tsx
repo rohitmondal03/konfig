@@ -1,9 +1,8 @@
-import * as React from "react"
-import { Button, buttonVariants } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { CodeBlock } from "../ui/code-block"
-// import { CodeBlock } from "@/components/ui/code-block"
+import { URLS } from "@repo/shared"
 
 export function HeroSection() {
   const sdkCode = `
@@ -49,11 +48,12 @@ export function HeroSection() {
             Get Started
           </Link>
           <Link
-            href={"/docs"}
+            href={URLS.docs}
             className={cn(
               buttonVariants({ variant: "secondary", size: "lg" }),
               "text-lg p-6"
             )}
+            target="_blank"
           >
             View Docs
           </Link>

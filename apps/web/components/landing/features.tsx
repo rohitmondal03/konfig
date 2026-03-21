@@ -39,9 +39,13 @@ export function FeatureGrid() {
     <section className="py-24 relative">
       <div className="container mx-auto px-4 max-w-6xl">
         <div className="mb-16 text-center space-y-6">
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight">
-            <span className="text-white">Everything you need.</span> <br />
-            <span className="text-white/40 ">Nothing you don't.</span>
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight leading-14">
+            <span className="text-white">
+              Everything you need.
+            </span> <br />
+            <span className="text-white/40 ">
+              Nothing you don't.
+            </span>
           </h2>
           <p className="text-lg text-white/75">
             A developer-first platform designed to solve configuration management without the bloat.
