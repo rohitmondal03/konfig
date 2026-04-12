@@ -1,0 +1,68 @@
+---
+title: Using with Express
+description: Set up Konfig in an Express.js backend.
+---
+
+# Express.js Integration
+
+Integrating Konfig into your Express.js backend allows you to easily switch databases, API endpoints, and feature flags seamlessly without restarting or pushing code to your environments.
+
+## Setup
+
+Ensure you have installed both Express and the Konfig SDK:
+```bash
+npm install express @konfig/sdk
+```
+
+## Creating a Konfig Middleware
+
+To ensure the configurations are loaded before your application accepts requests, it's best to initialize and `preload()` Konfig before calling `app.listen()`.
+
+```javascript
+import express from 'express';
+import { Konfig } from '@konfig/sdk';
+
+const app = express();
+const port = 3000;
+
+// Initialize the Konfig client
+const konfig = new Konfig({ apiKey: process.env.KONFIG_API_KEY });
+
+// Setup a small middleware if you want `req.konfig` available everywhere
+app.use((req, res, next) => {
+  req.konfig = konfig;
+  next();
+});
+
+// A route utilizing a dynamic feature flag
+app.get('/api/users', (req, res) => {
+  const isV2Enabled = req.konfig.get("ENABLE_USERS_V2_ENDPOINT") === "true";
+  
+  if (isV2Enabled) {
+    return res.json({ message: "V2 Data", data: [] });
+  }
+
+  return res.json({ message: "V1 Legacy Data" });
+});
+
+// Boot the server: Preload configurations BEFORE accepting traffic
+async function startServer() {
+  try {
+    console.log("Fetching configurations from Konfig...");
+    await konfig.preload();
+    
+    app.listen(port, () => {
+      // Configuration is guaranteed ready by this point
+      console.log(`Server listening on port ${port}`);
+      console.log(`Database URL: ${konfig.get("DATABASE_URL")}`);
+    });
+  } catch (error) {
+    console.error("Failed to load configurations. Halting startup.", error);
+    process.exit(1);
+  }
+}
+
+startServer();
+```
+
+By preloading before `app.listen()`, you guarantee no incoming request will fail due to missing environment variables.

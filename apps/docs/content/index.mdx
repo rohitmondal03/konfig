@@ -1,0 +1,35 @@
+---
+title: Konfig Documentation
+description: Welcome to the official Konfig API and SDK documentation.
+---
+
+## What is Konfig?
+
+Konfig is a configuration management platform where developers securely store environment variables and secrets in a centralized dashboard, and fetch them directly inside applications using a fast and reliable SDK.
+
+## Key Features
+
+- **Centralized Secrets**: Manage all your API keys and configs in one place.
+- **Fast SDK**: Fetch variables instantly with our optimized client.
+- **Environment Isolation**: Easily switch between Development, Staging, and Production.
+- **Developer First**: Built strictly for modern developers.
+
+## Quick Example Using SDK
+
+```typescript
+import { Konfig } from "@konfig/sdk";
+
+// Initialize with your project API key
+const konfig = new Konfig({
+  apiKey: process.env.KONFIG_API_KEY
+});
+
+// Preload configurations for minimal latency
+await konfig.preload();
+
+// Get your variable
+const dbUrl = konfig.get("DATABASE_URL");
+console.log("Connected to", dbUrl);
+```
+
+Ready to begin? [Go to Getting Started](/getting-started)

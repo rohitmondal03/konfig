@@ -1,0 +1,43 @@
+---
+title: API Keys
+description: Securely authenticate your applications to fetch configurations.
+---
+
+# API Keys
+
+API Keys are the bridge between your live applications and Konfig. They authenticate requests and determine which environment's variables your application is allowed to access.
+
+## Scoping
+
+For security, every API key is strictly scoped to a single **Environment** within a **Project**. 
+A key generated for the `Development` environment cannot access variables defined in the `Production` environment.
+
+## Generating API Keys
+
+1. Navigate to your Project.
+2. Go to the **API Keys** settings tab.
+3. Click **Generate New Key**.
+4. Select the target **Environment** (Development, Staging, Production).
+5. Add an optional descriptive name (e.g., `Vercel Deployment Key`, `Local Dev Key`).
+6. Copy the key. It will only be shown once!
+
+## Using API Keys
+
+When integrating the SDK, your API key should be provided during initialization. 
+Since API keys are passwords to your configurations, **never hardcode them**. 
+
+Provide them through your local `.env` files or your host provider's built-in environment runtime storage (e.g., Vercel, AWS, Railway config).
+
+```typescript
+import { Konfig } from "@konfig/sdk";
+
+const konfig = new Konfig({
+  // The SDK will automatically detect KONFIG_API_KEY from process.env if omitted,
+  // but you can pass it explicitly.
+  apiKey: process.env.KONFIG_API_KEY // e.g. "kfg_prod_12345abcdef"
+});
+```
+
+## Revoking Keys
+
+If an API key is compromised, immediately revoke it from the Konfig dashboard. Any application using the revoked key will immediately receive errors when attempting to fetch variables.

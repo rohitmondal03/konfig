@@ -1,0 +1,61 @@
+---
+title: Installation
+description: Install the Konfig SDK in your application.
+---
+
+# Installation
+
+The Konfig SDK is the fastest and most secure way to fetch your configurations and environment variables inside your application.
+
+## Prerequisites
+
+- Node.js version 18.0.0 or higher.
+- A Konfig API key (see [Getting Started](/getting-started)).
+
+## Install the Package
+
+Our SDK is available on npm. You can install it using your preferred package manager.
+
+```bash
+# Using npm
+npm install @konfig/sdk
+
+# Using pnpm
+pnpm add @konfig/sdk
+
+# Using yarn
+yarn add @konfig/sdk
+```
+
+## Basic Setup
+
+Once installed, you can import and initialize the Konfig client in your application. We recommend doing this as early as possible in your application lifecycle.
+
+```typescript
+import { Konfig } from "@konfig/sdk";
+
+// Initialize the client with your SDK key
+const konfig = new Konfig({
+  apiKey: "your_api_key_here",
+});
+
+// Example: Fetch a variable
+async function startApp() {
+  // Preload all variables to memory for zero-latency access
+  await konfig.preload();
+  
+  const dbPassword = konfig.get("DB_PASSWORD");
+  console.log("Password retrieved successfully!");
+}
+
+startApp();
+```
+
+> **Note:** Never hardcode your production API keys in your source code. Pass them via your deployment provider's environment variables or local `.env` files.
+
+## Next Steps
+
+Explore specific guides for your framework:
+- [Usage with Node.js](/guides/node)
+- [Usage with Express](/guides/express)
+- [Usage with Next.js](/guides/nextjs)

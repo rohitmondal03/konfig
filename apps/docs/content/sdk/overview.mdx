@@ -1,0 +1,37 @@
+---
+title: SDK Overview
+description: Overview of the Konfig official TypeScript/JavaScript SDK.
+---
+
+# SDK Overview
+
+The Konfig SDK is the officially supported client for interacting with the Konfig Cloud. It is written in pure TypeScript and optimized for maximum speed and security.
+
+## Core Capabilities
+
+The SDK is built with three main design philosophies:
+
+1. **Zero Dependency**: The SDK has zero external dependencies, meaning it won't bloat your bundle size or introduce unexpected third-party vulnerabilities.
+2. **In-Memory Caching**: To guarantee ultra-fast reads, the SDK securely caches your variables in memory. Lookups happen in `O(1)` time without network round-trips.
+3. **Type Safety**: Built with TypeScript from the ground up, providing automatic type inference, autocomplete, and compile-time confidence.
+
+## Supported Environments
+
+The SDK is universally compatible with standard JavaScript environments:
+- **Node.js** (v18+)
+- **Cloudflare Workers**
+- **Vercel Edge Functions**
+- **Deno**
+- **Bun**
+
+> **Note:** The SDK is intentionally designed to **NOT** run in the Browser (Client-side HTML/JS) by default, as executing Konfig in the browser implies exposing your API Key publicly, which is a major security risk.
+
+## Installation
+
+As a reminder, you can install the SDK via:
+
+```bash
+npm install @konfig/sdk
+```
+
+Next, read through the [Usage](/sdk/usage) guide to understand how to correctly initialize and utilize the SDK in your project.

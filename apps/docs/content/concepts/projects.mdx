@@ -1,0 +1,31 @@
+---
+title: Projects
+description: Organizing your environments and variables into projects.
+---
+
+# Projects
+
+In Konfig, **Projects** are the top-level organizational units for your configurations. 
+A project typically corresponds to a single application, microservice, or website within your organization.
+
+## What's in a Project?
+
+Each project contains:
+- **Environments**: Isolated workspaces (e.g., Development, Staging, Production).
+- **Configurations (Variables)**: The actual key-value pairs stored securely.
+- **API Keys**: Access tokens scoped to specific environments within the project.
+
+## Creating a Project
+
+1. Navigate to the top-level **Dashboard** in Konfig Cloud.
+2. Click **Create Project**.
+3. Provide a clear, identifiable name such as `auth-service` or `marketing-website`.
+
+## Structuring Projects
+
+For smaller organizations, a few large projects might suffice. However, as your architecture grows, we recommend adopting a **microservices approach** to your projects.
+
+- **Monoliths**: One project (e.g., `acme-web-app`) containing all variables.
+- **Microservices**: Multiple projects (e.g., `acme-auth`, `acme-payments`, `acme-email`) ensuring variables are scoped strictly to the services that need them.
+
+This separation prevents accidental exposure of sensitive keys (like payment gateway secrets) to services that don't require them.

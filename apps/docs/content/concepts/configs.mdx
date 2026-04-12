@@ -1,0 +1,40 @@
+---
+title: Configurations
+description: Managing secrets, variables, and feature flags.
+---
+
+# Configurations
+
+Configurations (or Variables) are the core of Konfig. They are securely encrypted key-value pairs that represent your application's environment variables, secrets, and feature toggles.
+
+## Types of Configurations
+
+While under the hood everything is securely treated as a string, configurations are typically used for:
+- **Secrets**: Database passwords, API tokens, third-party credentials.
+- **Environment Context**: Base URLs, port numbers, log levels.
+- **Feature Flags**: Simple string or boolean equivalents (e.g., `ENABLE_NEW_UI=true`) to toggle features without deploying code.
+
+## Variable Overrides
+
+Konfig supports powerful environment-based overrides. 
+You can create a variable named `API_BASE_URL` and provide different values for each environment:
+
+| Environment | Value |
+|-------------|-------|
+| **Development** | `http://localhost:8080/api` |
+| **Staging** | `https://staging-api.example.com` |
+| **Production** | `https://api.example.com` |
+
+When your application fetches `API_BASE_URL`, the SDK automatically serves the correct value based on the environment scope of the API key used.
+
+## Fetching Configurations
+
+Once defined, configurations are fetched via the SDK:
+
+```typescript
+// Fetching a string variable
+const apiKey = konfig.get("STRIPE_API_KEY");
+
+// Default values can be provided as a fallback
+const timeout = konfig.get("REQUEST_TIMEOUT", "5000");
+```

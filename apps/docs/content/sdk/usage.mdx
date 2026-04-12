@@ -1,0 +1,76 @@
+---
+title: Usage Patterns
+description: Core usage patterns and best practices for the Konfig SDK.
+---
+
+# SDK Usage Patterns
+
+This page outlines the core patterns for utilizing the Konfig SDK securely and efficiently in your application.
+
+## Initialization
+
+The Konfig client must be instantiated with a valid API key.
+
+```typescript
+import { Konfig } from "@konfig/sdk";
+
+const konfig = new Konfig({
+  // Typically loaded from process.env
+  apiKey: "kfg_prod_xxxxx", 
+});
+```
+
+### Auto-Detection
+
+If `apiKey` is not provided to the constructor, the SDK will automatically attempt to read the `KONFIG_API_KEY` environment variable.
+
+```typescript
+// Uses process.env.KONFIG_API_KEY automatically
+const konfig = new Konfig();
+```
+
+## Preloading Variables
+
+To avoid latency when fetching configurations, Konfig requires a `preload()` call. This initiates a single fast HTTP request to the Konfig Cloud, downloading all your project's variables securely into server memory.
+
+```typescript
+await konfig.preload();
+```
+
+> **Best Practice:** Call `preload()` at the highest level of your application lifecycle (e.g., `server.ts` or `index.js`).
+
+## Fetching Variables
+
+Once preloaded, you can synchronously fetch any variable. 
+
+```typescript
+// Fetching a known variable
+const connectionString = konfig.get("DB_URL");
+
+// Fetching with a fallback default value
+const maxRetries = konfig.get("MAX_RETRIES", "3");
+```
+
+### Type Assertions
+
+Because all environment variables are fundamentally strings, you will need to parse them locally if you expect booleans or numbers.
+
+```typescript
+// Fetching and parsing a boolean feature flag
+const enableBetaUI = konfig.get("ENABLE_BETA_UI") === "true";
+
+// Fetching and parsing an integer
+const port = parseInt(konfig.get("PORT", "3000"), 10);
+```
+
+## Error Handling
+
+If a variable is highly critical and it cannot be found (and no default is provided), you may want to manually throw an error to fail fast:
+
+```typescript
+const secret = konfig.get("STRIPE_SECRET");
+
+if (!secret) {
+  throw new Error("CRITICAL: STRIPE_SECRET missing from Konfig!");
+}
+```

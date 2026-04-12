@@ -1,0 +1,88 @@
+---
+title: Using with Next.js
+description: Securely fetch Konfig variables in server-side Next.js components.
+---
+
+# Next.js Integration
+
+Because Konfig uses API keys, it must **never** be executed on the client-side of your application to prevent exposing your secrets to end users. In Next.js, this means strictly using Konfig in **Server Components** or **Route Handlers**.
+
+## Setup
+
+First, install the SDK:
+```bash
+npm install @konfig/sdk
+```
+
+## Global Konfig Instance
+
+Because Next.js heavily relies on Hot Module Replacement (HMR) during development, creating multiple instances of Konfig can lead to memory leaks or rate-limits. We recommend creating a global instance wrapper `lib/konfig.ts`.
+
+### `lib/konfig.ts`
+```typescript
+import 'server-only';
+import { Konfig } from '@konfig/sdk';
+
+// Creating a singleton for Next.js to prevent HMR multiple instantiations
+const globalForKonfig = global as unknown as { konfig: Konfig };
+
+export const konfig = globalForKonfig.konfig || new Konfig({
+  apiKey: process.env.KONFIG_API_KEY as string,
+});
+
+if (process.env.NODE_ENV !== 'production') {
+  globalForKonfig.konfig = konfig;
+}
+```
+
+> **Warning:** Notice the `import 'server-only'` package. This enforces that this file can never accidentally leak into a client bundle. Install it via `npm install server-only`.
+
+## Using inside Server Components
+
+You can now use your `konfig` client securely inside any Server Component. You can fetch variables on-demand using async/await and `konfig.get()`.
+
+### `app/page.tsx`
+```tsx
+import { konfig } from '@/lib/konfig';
+
+export default async function Page() {
+  // We ensure the variables are preloaded for this render cycle
+  await konfig.preload();
+  
+  // Safely fetch a sensitive variable on the server
+  const featureFlag = konfig.get('SHOW_NEW_DASHBOARD');
+  const stripeKey = konfig.get('STRIPE_SECRET_KEY');
+
+  return (
+    <main>
+      <h1>Dashboard</h1>
+      {featureFlag === 'true' ? (
+        <NewDashboard />
+      ) : (
+        <LegacyDashboard />
+      )}
+    </main>
+  );
+}
+```
+
+## Using in Route Handlers
+
+Similarly, you can use the same pattern in your API routes (`app/api/route.ts`).
+
+```typescript
+import { NextResponse } from 'next/server';
+import { konfig } from '@/lib/konfig';
+import Stripe from 'stripe';
+
+export async function POST(req: Request) {
+  await konfig.preload();
+  
+  const stripe = new Stripe(konfig.get('STRIPE_SECRET_KEY'), {
+    apiVersion: '2023-10-16'
+  });
+
+  // Handle payments directly!
+  return NextResponse.json({ success: true });
+}
+```

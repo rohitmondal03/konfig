@@ -1,0 +1,61 @@
+---
+title: Using with Node.js
+description: Integrate Konfig securely in your vanilla Node.js scripts and workflows.
+---
+
+# Node.js Integration
+
+Konfig is built to be an exceptionally lightweight addition to any Node.js process. Whether you are running CRON jobs, CLI tools, or simple scripts, fetching your configurations takes milliseconds.
+
+## Setup
+
+First, install the SDK:
+```bash
+npm install @konfig/sdk
+```
+
+## Initialization
+
+Import and initialize the client. For basic Node scripts, you can initialize Konfig at the top of your execution loop.
+
+```javascript
+import { Konfig } from "@konfig/sdk";
+
+// Initialize using the API key injected via your environment
+const konfig = new Konfig({
+  apiKey: process.env.KONFIG_API_KEY
+});
+
+async function runTask() {
+  console.log("Starting CRON task...");
+
+  // Preload variables from Konfig Cloud
+  await konfig.preload();
+
+  // Fetch secrets securely into memory
+  const awsKey = konfig.get("AWS_ACCESS_KEY");
+  const awsSecret = konfig.get("AWS_SECRET_KEY");
+
+  // Run your logic
+  await uploadToS3(awsKey, awsSecret, "./data.csv");
+  
+  console.log("Task Completed");
+}
+
+runTask();
+```
+
+## Top-Level Await
+
+If you are using modern Node.js versions (v14.8+) with ES Modules (`"type": "module"` in your `package.json`), you can take advantage of top-level `await` to block execution until your configurations are loaded.
+
+```javascript
+import { Konfig } from "@konfig/sdk";
+
+const konfig = new Konfig({ apiKey: process.env.KONFIG_API_KEY });
+await konfig.preload();
+
+// Safely export initialized services that depend on configs
+export const databaseUrl = konfig.get("DATABASE_URL");
+export const emailProviderKey = konfig.get("RESEND_API_KEY");
+```

@@ -1,159 +1,84 @@
-# Turborepo starter
+# Konfig
 
-This Turborepo starter is maintained by the Turborepo core team.
+> Configuration management for modern applications.
 
-## Using this example
+[![npm version](https://img.shields.io/npm/v/@konfig/sdk.svg?style=flat-square)](https://www.npmjs.com/package/@konfig/sdk)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/rohitmondal03/konfig/ci.yml?branch=main&style=flat-square)](https://github.com/rohitmondal03/konfig/actions)
 
-Run the following command:
+## Quick Start
 
-```sh
-npx create-turbo@latest
+```typescript
+import { Konfig } from "@konfig/sdk"
+
+const konfig = new Konfig({
+  apiKey: process.env.KONFIG_API_KEY
+})
+
+await konfig.preload()
+
+const db = await konfig.get("DATABASE_URL")
 ```
 
-## What's inside?
+## Installation
 
-This Turborepo includes the following packages/apps:
+```bash
+# npm
+npm install @konfig/sdk
 
-### Apps and Packages
+# pnpm
+pnpm add @konfig/sdk
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo build
+# yarn
+yarn add @konfig/sdk
 ```
 
-Without global `turbo`, use your package manager:
+## Usage
 
-```sh
-cd my-turborepo
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+1. Create project in dashboard
+2. Generate API key
+3. Add configs
+4. Fetch using SDK
+
+```typescript
+import { Konfig } from "@konfig/sdk"
+
+// Initialize the client
+const konfig = new Konfig({ 
+  apiKey: process.env.KONFIG_API_KEY 
+})
+
+async function main() {
+  // Preload caches all configuration for fast access
+  await konfig.preload()
+  
+  // Retrieve your securely stored variables
+  const dbUrl = await konfig.get("DATABASE_URL")
+  const port = await konfig.get("PORT")
+
+  console.log(`Starting app on port ${port}...`)
+}
+
+main()
 ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+## How It Works
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+Application ➔ SDK ➔ API ➔ Config Store
 
-```sh
-turbo build --filter=docs
-```
+## Features
 
-Without global `turbo`:
+- Secure config storage
+- SDK-based access
+- Project-based API keys
+- Fast API
+- Caching and preload support
+- Background refresh
 
-```sh
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
+## Documentation
 
-### Develop
+**[Read the Docs ➔](https://konfig-docs.vercel.app)**
 
-To develop all apps and packages, run the following command:
+---
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo dev
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
-```
-
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo dev --filter=web
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo login
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo link
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+*Built for developers who care about simplicity and performance.*

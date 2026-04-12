@@ -1,0 +1,89 @@
+---
+title: API Reference
+description: Technical reference for the Konfig SDK methods and properties.
+---
+
+# API Reference
+
+A detailed breakdown of classes, methods, and options available in `@konfig/sdk`.
+
+---
+
+## `Konfig` Class
+
+The primary client class used to interact with the service.
+
+### Constructor Options `KonfigOptions`
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `apiKey` | `string` | `undefined` | The API specific to your project environment. If omitted, falls back to `process.env.KONFIG_API_KEY`. |
+| `cacheTTL` | `number` | `300000` (5 mins) | How long (in ms) before the memory cache is expired. Set to `0` to disable caching (not recommended). |
+
+**Example:**
+```typescript
+const konfig = new Konfig({
+  apiKey: process.env.KONFIG_API_KEY,
+  cacheTTL: 60000 // 1 minute
+});
+```
+
+---
+
+## Methods
+
+### `preload()`
+
+Fetches all variables tied to the API key from the network and securely loads them into local memory.
+
+- **Returns**: `Promise<void>`
+- **Throws**: `KonfigAuthenticationError` if the API key is rejected.
+
+```typescript
+await konfig.preload();
+```
+
+---
+
+### `get(key: string, defaultValue?: string)`
+
+Retrieves a variable synchronously from the local cache. 
+
+- **Parameters**: 
+  - `key` (string): The exact key name defined in your database.
+  - `defaultValue` (string - optional): A fallback value to return if the key is not found.
+- **Returns**: `string | undefined`
+- **Throws**: `KonfigNotPreloadedError` if called before `preload()` resolves.
+
+```typescript
+const url = konfig.get("API_URL", "https://default.example.com");
+```
+
+---
+
+### `getAll()`
+
+Retrieves a copy of the entire local storage configuration map. Useful for debugging or migrating data.
+
+- **Returns**: `Record<string, string>`
+
+```typescript
+const allVars = konfig.getAll();
+console.log(Object.keys(allVars));
+```
+
+---
+
+### `refresh()`
+
+Manually forces the Konfig client to disregard the `cacheTTL` timeout and immediately re-fetch all variables from the network. 
+
+- **Returns**: `Promise<void>`
+
+```typescript
+// E.g., tied to a web-hook to update instantly
+app.post("/webhooks/konfig-update", async (req, res) => {
+  await konfig.refresh();
+  res.status(200).send("Updated");
+});
+```
