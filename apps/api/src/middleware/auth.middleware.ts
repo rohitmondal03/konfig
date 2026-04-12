@@ -1,8 +1,13 @@
 import { NextFunction, Request, Response, RequestHandler } from "express";
 import { eq } from "drizzle-orm";
-import { AUTH_HEADER_PREFIX, compareKeyWithHash, extractKeyFromApiKey, extractKeyIdFromApiKey } from "@repo/shared";
-import { db } from "../db";
-import { apiKeysTable } from "../db/schema";
+import {
+  AUTH_HEADER_PREFIX,
+  compareKeyWithHash,
+  extractKeyFromApiKey,
+  extractKeyIdFromApiKey,
+} from "@repo/shared";
+import { db } from "@repo/db";
+import { apiKeysTable } from "@repo/db";
 
 
 export const authMiddleware: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
@@ -15,7 +20,6 @@ export const authMiddleware: RequestHandler = async (req: Request, res: Response
   }
 
   const apiKey = authHeader.replace(AUTH_HEADER_PREFIX, "").trim()
-
   const apiKeyId = extractKeyIdFromApiKey(apiKey);
   const apiKeySecret = extractKeyFromApiKey(apiKey)
 

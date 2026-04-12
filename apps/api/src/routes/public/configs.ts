@@ -1,27 +1,29 @@
 import { Router } from "express";
 import { and, eq } from "drizzle-orm";
-import { db } from "../../db";
-import { apiKeysTable, configsTable } from "../../db/schema";
+import { decryptText } from "@repo/shared";
+import { db, configsTable } from "@repo/db";
 import { authMiddleware } from "../../middleware/auth.middleware";
-import { AUTH_HEADER_PREFIX } from "@repo/shared";
 
 
 const router = Router();
 
 
-// Get configs from "key (out of key-value)"
-// URL structure - /configs/v1?key="xxxxxcccc"
+// Get all project's configs OR from "key (out of key-value)"
+// URL structure - /v1/public/configs?key="xxxxxcccc" OR /v1/public/configs
 router.get("/configs", authMiddleware, async (req, res) => {
   const { key: configKey } = req.query as { key: string };
   const apiKeyData = req.apiKey;
 
-  if (!configKey) {
-    return res.status(400).json({
-      error: "Config's Key is required"
-    })
-  }
+  let configs = []
 
-  const configs = await db
+  // if no config key, then return all project's configs, else return only according to "key"
+  if (!configKey) {
+    configs = await db
+      .select()
+      .from(configsTable)
+      .where(eq(configsTable.projectId, apiKeyData.projectId));
+  }
+  configs = await db
     .select({
       key: configsTable.key,
       value: configsTable.value,
@@ -40,7 +42,13 @@ router.get("/configs", authMiddleware, async (req, res) => {
     })
   }
 
-  return res.status(200).json(configs);
+  const configsWithDecryptedValue = configs.map(con => ({
+    key: con.key,
+    value: decryptText(con.value),
+    environment: con.environment,
+  }))
+
+  return res.status(200).json(configsWithDecryptedValue);
 })
 
 

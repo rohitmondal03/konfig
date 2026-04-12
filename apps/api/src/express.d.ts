@@ -1,4 +1,4 @@
-import type { TApiKey } from "./db/types"
+import { type TApiKey } from "@repo/db"
 
 declare global {
   namespace Express {

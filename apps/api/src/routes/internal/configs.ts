@@ -1,16 +1,14 @@
 import { Router } from "express";
 import { eq, and } from "drizzle-orm";
-import { extractKeyIdFromApiKey, API_PREFIX } from "@repo/shared";
-import { db } from "../../db";
-import { apiKeysTable, configsTable, projectsTable } from "../../db/schema";
+import { decryptText, encryptText } from "@repo/shared";
+import { db, configsTable, projectsTable } from "@repo/db";
 
 const router = Router();
 
 
-// Get "configs list" from project ID
-router.get("/get", async (req, res) => {
-  const body = req.body;
-  const projectId = body.projectId;
+// Get all "configs" from project ID
+router.get("/get/:project_id", async (req, res) => {
+  const { project_id: projectId } = req.params;
 
   // if no PROJECT ID, then
   if (!projectId) {
@@ -20,21 +18,35 @@ router.get("/get", async (req, res) => {
   }
 
   const configs = await db
-    .select()
+    .select({
+      key: configsTable.key,
+      value: configsTable.value,
+      environment: configsTable.environment,
+    })
     .from(configsTable)
     .where(eq(configsTable.projectId, projectId))
 
-  return res.json(configs);
+  const configsWithDecryptedValues = configs.map(config => ({
+    ...config,
+    value: decryptText(config.value)
+  }));
+
+  return res.json(configsWithDecryptedValues);
 })
 
 
 // Add new config
 router.post("/create", async (req, res) => {
-  const body = req.body;
-  const projectId = body.projectId.trim()
-  const key = body.key.trim()
-  const value = body.value.trim()
-  const env = body.env.trim()
+  const body = req.body as {
+    projectId: string,
+    key: string,
+    value: string,
+    env: "production" | "development"
+  };
+  const projectId = body.projectId.trim();
+  const key = body.key.trim();
+  const value = body.value.trim();
+  const env = body.env;
 
   if (!projectId || !key || !value) {
     return res.status(400).json({
@@ -77,7 +89,7 @@ router.post("/create", async (req, res) => {
     .values({
       projectId,
       key,
-      value,
+      value: encryptText(value),
       environment: env,
     })
     .returning()

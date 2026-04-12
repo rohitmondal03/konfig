@@ -1,10 +1,16 @@
-import { API_URL } from "@repo/shared"
-import { ConfigResponse } from "./types";
+import { API_PREFIX, API_URL } from "@repo/shared"
+import type { CONFIG_ENVIRONMENT, ConfigResponse } from "./types";
 
 export class Konfig {
   private apiKey: string
   private baseUrl: string
-  private cache = new Map<string, string>()  // for caching the keys
+
+  // for caching the keys
+  // Structure - key: {value: "Xxxx", environment: "dev"}
+  private cache = new Map<string, {
+    value: string,
+    environment: CONFIG_ENVIRONMENT
+  }>()
 
   constructor(options: { apiKey: string }) {
     this.apiKey = options.apiKey;
@@ -16,7 +22,7 @@ export class Konfig {
       return this.cache.get(key);
     }
 
-    const response = await fetch(`${this.baseUrl}/v1/config?key=${key}`, {
+    const response = await fetch(`${this.baseUrl}/${API_PREFIX}/configs?key=${key}`, {
       headers: {
         Authorization: `Bearer ${this.apiKey}`,
       },
@@ -28,8 +34,20 @@ export class Konfig {
 
     const data = await response.json() as ConfigResponse;
 
-    this.cache.set(key, data.value);
+    this.cache.set(key, { value: data.value, environment: data.environment });
 
     return data.value;
+  }
+
+  async preload() {
+    const response = await fetch(`${this.baseUrl}/${API_PREFIX}/configs`, {
+      headers: {
+        Authorization: `Bearer ${this.apiKey}`,
+      },
+    });
+
+    const data = await response.json() as ConfigResponse[];
+
+    data.forEach(con => this.cache.set(con.key, { value: con.value, environment: con.environment }))
   }
 }

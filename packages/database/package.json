@@ -1,0 +1,21 @@
+{
+  "name": "@repo/db",
+  "version": "0.0.1",
+  "private": "true",
+  "main": "src/index.ts",
+  "scripts": {
+    "db:studio": "drizzle-kit studio",
+    "db:migrate": "tsx src/db/migrate.ts",
+    "db:generate": "drizzle-kit generate --dialect postgresql --out src/db/migrations --schema src/db/schema.ts"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.45.1",
+    "postgres": "^3.4.8"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.31.9",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}

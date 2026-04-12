@@ -11,7 +11,6 @@
     "check-types": "next typegen && tsc --noEmit"
   },
   "dependencies": {
-    "@repo/ui": "workspace:*",
     "@types/mdx": "^2.0.13",
     "fumadocs-core": "^16.7.2",
     "fumadocs-mdx": "^14.2.11",

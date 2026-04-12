@@ -1,8 +1,11 @@
 import { Router } from "express";
 import { eq } from "drizzle-orm";
-import { extractKeyIdFromApiKey, formatApiKey, generateApiKey } from "@repo/shared";
-import { db } from "../../db";
-import { apiKeysTable, projectsTable } from "../../db/schema";
+import { db, apiKeysTable, projectsTable } from "@repo/db";
+import {
+  extractKeyIdFromApiKey,
+  formatApiKey,
+  generateApiKey
+} from "@repo/shared";
 
 
 const router = Router();

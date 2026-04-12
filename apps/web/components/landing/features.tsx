@@ -1,4 +1,4 @@
-import { LockIcon, CodeIcon, GlobeIcon, KeyIcon, BlockedIcon, ZapIcon } from "@hugeicons/core-free-icons"
+import { LockIcon, KeyIcon, BlockedIcon, ZapIcon } from "@hugeicons/core-free-icons"
 import { Icon } from "../shared/icon"
 
 const FEATURES = [

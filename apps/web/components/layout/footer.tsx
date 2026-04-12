@@ -4,21 +4,21 @@ import { Icon } from "../shared/icon"
 import { Logo } from "../shared/logo"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "../ui/button"
-import { URLS } from "@repo/shared"
+import { DOCS_SITE_URL, GITHUB_URL, URLS } from "@repo/shared"
 
 const FOOTER_LINKS = [
   {
-    href: URLS.docs,
+    href: DOCS_SITE_URL,
     title: "Docs",
     target: "_blank"
   },
   {
-    href: URLS.dashoard,
+    href: URLS.dashboard,
     title: "Dashboard",
     target: "_self"
   },
   {
-    href: URLS.github,
+    href: GITHUB_URL,
     title: "Github",
     target: "_blank",
     icon: <Icon icon={GithubIcon} fill="#fff" />
