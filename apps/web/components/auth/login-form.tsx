@@ -4,25 +4,44 @@ import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Key01Icon, MailOpen02Icon } from "@hugeicons/core-free-icons";
+import { Key01Icon, Loading03Icon, MailOpen02Icon } from "@hugeicons/core-free-icons";
 import { Icon } from "../shared/icon";
+import { loginUser } from "@/actions/users.action";
+import { toast } from "sonner";
 
-export function SignInForm() {
-  const [isLoading, setIsLoading] = React.useState(false);
+export function LogInForm() {
+  const [isLoading, setLoading] = React.useState(false);
+  const [formData, setFormData] = React.useState({
+    email: "",
+    password: "",
+  })
 
-  async function onSubmit(event: React.SyntheticEvent) {
+  // login a user
+  async function login(event: React.SyntheticEvent) {
     event.preventDefault();
-    setIsLoading(true);
 
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
+    setLoading(true);
+
+    await loginUser({ ...formData })
+      .then(() => {
+        toast.success("Welcome Back !!");
+      })
+      .catch(error => {
+        toast.error("Error while Login !", {
+          description: error.message,
+        })
+      })
+      .finally(() => {
+        setLoading(false);
+      })
   }
 
   return (
     <div className="grid gap-6">
-      <form onSubmit={onSubmit}>
+      <form onSubmit={login}>
         <div className="grid gap-4">
+
+          {/* Email */}
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
             <div className="relative">
@@ -39,9 +58,13 @@ export function SignInForm() {
                 disabled={isLoading}
                 className="pl-9"
                 required
+                value={formData.email}
+                onChange={e => setFormData(prev => ({ ...prev, email: e.target.value }))}
               />
             </div>
           </div>
+
+          {/* Password */}
           <div className="grid gap-2">
             <Label htmlFor="password">Password</Label>
             <div className="relative">
@@ -56,14 +79,22 @@ export function SignInForm() {
                 disabled={isLoading}
                 className="pl-9"
                 required
+                value={formData.password}
+                onChange={e => setFormData(prev => ({ ...prev, password: e.target.value }))}
               />
             </div>
           </div>
-          <Button disabled={isLoading} className="mt-2">
+
+          <Button
+            disabled={isLoading}
+            className="mt-2"
+          >
             {isLoading && (
-              <span className="mr-2 animate-spin">⚪</span>
+              <span className="mr-2 animate-spin">
+                <Icon icon={Loading03Icon} />
+              </span>
             )}
-            Sign In
+            Log In
           </Button>
         </div>
       </form>

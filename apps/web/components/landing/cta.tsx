@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
-import { DOCS_SITE_URL, URLS } from "@repo/shared"
+import { DOCS_SITE_URL } from "@repo/shared"
 
 export function CTASection() {
   return (
@@ -32,6 +32,7 @@ export function CTASection() {
             buttonVariants({ variant: "secondary", size: "lg" }),
             "text-lg p-6"
           )}
+          target="_blank"
         >
           View Docs
         </Link>

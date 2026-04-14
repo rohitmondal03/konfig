@@ -1,8 +1,8 @@
 import { buttonVariants } from "@/components/ui/button"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
+import { DOCS_SITE_URL } from "@repo/shared"
 import { CodeBlock } from "../ui/code-block"
-import { URLS } from "@repo/shared"
 
 export function HeroSection() {
   const sdkCode = `
@@ -48,7 +48,7 @@ export function HeroSection() {
             Get Started
           </Link>
           <Link
-            href={URLS.docs}
+            href={DOCS_SITE_URL}
             className={cn(
               buttonVariants({ variant: "secondary", size: "lg" }),
               "text-lg p-6"

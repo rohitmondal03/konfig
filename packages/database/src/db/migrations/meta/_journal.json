@@ -15,6 +15,13 @@
       "when": 1773415773486,
       "tag": "0001_add_project_id_to_projects_table_with_fk",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1776063915404,
+      "tag": "0002_create_auth_table",
+      "breakpoints": true
     }
   ]
 }

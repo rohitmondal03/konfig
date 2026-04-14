@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { eq, and } from "drizzle-orm";
 import { decryptText, encryptText } from "@repo/shared";
-import { db, configsTable, projectsTable } from "@repo/db";
+import { db, schema } from "@repo/db";
 
 const router = Router();
 
@@ -9,6 +9,8 @@ const router = Router();
 // Get all "configs" from project ID
 router.get("/get/:project_id", async (req, res) => {
   const { project_id: projectId } = req.params;
+
+  const configsTable = schema.configsTable;
 
   // if no PROJECT ID, then
   if (!projectId) {
@@ -53,6 +55,9 @@ router.post("/create", async (req, res) => {
       error: "Missing required fields"
     })
   }
+
+  const projectsTable = schema.projectsTable;
+  const configsTable = schema.configsTable;
 
   // if no project, throw error
   const [project] = await db
@@ -101,6 +106,8 @@ router.post("/create", async (req, res) => {
 // Delete config
 router.delete("/:config_id", async (req, res) => {
   const { config_id } = req.params;
+
+  const configsTable = schema.configsTable;
 
   const [deletedConfig] = await db
     .delete(configsTable)

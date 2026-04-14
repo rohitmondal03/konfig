@@ -1,5 +1,5 @@
 import { InferInsertModel, InferSelectModel, } from "drizzle-orm";
-import { apiKeysTable, configsTable, projectsTable } from "./schema";
+import { apiKeysTable, configsTable, projectsTable } from "./schema/schema";
 
 export type TProject = InferSelectModel<typeof projectsTable>
 export type TApiKey = InferSelectModel<typeof apiKeysTable>

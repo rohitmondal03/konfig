@@ -1,7 +1,14 @@
 import { compare, hash } from "bcrypt";
 import { nanoid } from "nanoid";
 import crypto from "crypto";
-import { API_KEY_PREFIX, ENCRYPTION_ALGO, ENCRYPTION_SECRET, KEY_ID_LENGTH, KEY_SECRET_LENGTH } from "./constants"
+import {
+  API_KEY_PREFIX,
+  DEFAULT_ERROR_MESSAGE,
+  ENCRYPTION_ALGO,
+  ENCRYPTION_SECRET,
+  KEY_ID_LENGTH,
+  KEY_SECRET_LENGTH
+} from "./constants"
 import "dotenv/config";
 
 
@@ -15,14 +22,14 @@ export async function generateApiKey() {
 }
 
 
-export async function compareKeyWithHash(data: string | Buffer<ArrayBufferLike>, encrypted: string) {
-  return await compare(data, encrypted);
-}
-
-
 // For showing users
 export function formatApiKey(keyId: string, key: string) {
   return `${API_KEY_PREFIX}_${keyId}${key}`;
+}
+
+
+export async function compareKeyWithHash(data: string | Buffer<ArrayBufferLike>, encrypted: string) {
+  return await compare(data, encrypted);
 }
 
 
@@ -76,4 +83,12 @@ export function decryptText(encryptedText: string) {
   ])
 
   return decrypted.toString();
+}
+
+
+export function throwError(error: unknown) {
+  if (error instanceof Error) {
+    throw new Error(error.message);
+  }
+  throw new Error(DEFAULT_ERROR_MESSAGE);
 }

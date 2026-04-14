@@ -1,3 +1,3 @@
 export * from "./db/db"
-export * from "./db/schema"
+export * as schema from "./db/schema/index"
 export * from "./db/types"

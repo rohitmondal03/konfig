@@ -1,8 +1,9 @@
+import "./globals.css";
 import type { Metadata } from "next";
 import { Outfit, Inter } from "next/font/google"
 import localFont from "next/font/local";
-import "./globals.css";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -33,10 +34,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={cn("dark", "font-sans", inter.variable)}>
-      <body
-        className={`${outfit.className} bg-background text-foreground`}
-      >
+      <body className={`${outfit.className} bg-background text-foreground`}>
         {children}
+        <Toaster
+          richColors
+          position="top-center"
+        />
       </body>
     </html>
   );

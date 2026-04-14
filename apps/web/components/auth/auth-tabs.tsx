@@ -2,7 +2,7 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { SignInForm } from "./sign-in-form";
+import { LogInForm } from "./login-form";
 import { SignUpForm } from "./sign-up-form";
 
 export function AuthTabs() {
@@ -21,7 +21,7 @@ export function AuthTabs() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
-            <SignInForm />
+            <LogInForm />
           </CardContent>
         </Card>
       </TabsContent>

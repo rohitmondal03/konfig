@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { and, eq } from "drizzle-orm";
 import { decryptText } from "@repo/shared";
-import { db, configsTable } from "@repo/db";
+import { db, schema } from "@repo/db";
 import { authMiddleware } from "../../middleware/auth.middleware";
 
 
@@ -13,6 +13,8 @@ const router = Router();
 router.get("/configs", authMiddleware, async (req, res) => {
   const { key: configKey } = req.query as { key: string };
   const apiKeyData = req.apiKey;
+
+  const configsTable = schema.configsTable;
 
   let configs = []
 

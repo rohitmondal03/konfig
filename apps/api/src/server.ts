@@ -1,13 +1,17 @@
 import express, { Request, Response } from "express"
 import cors from "cors"
+import { API_PREFIX, WEB_SITE_URL } from "@repo/shared"
+import { authConfigsRoutes } from "./routes/auth/auth"
 import { internalConfigsRoutes } from "./routes/internal/configs"
 import { internalProjectsRoutes } from "./routes/internal/projects"
 import { publicConfigsRoutes } from "./routes/public/configs"
-import { API_PREFIX } from "@repo/shared"
 
 const app = express()
 
-app.use(cors());
+app.use(cors({
+  origin: WEB_SITE_URL,
+  credentials: true,
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -22,6 +26,8 @@ app.use("/projects", internalProjectsRoutes);
 // Public routes
 app.use(`${API_PREFIX}`, publicConfigsRoutes)
 
+// Auth routes
+app.use("/auth", authConfigsRoutes)
 
 app.listen(4000, () => {
   console.log("API running on port 4000");

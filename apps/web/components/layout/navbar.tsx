@@ -3,17 +3,17 @@ import { GithubIcon, DashboardCircleIcon, } from "@hugeicons/core-free-icons"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 import { Icon } from "@/components/shared/icon"
+import { DOCS_SITE_URL, GITHUB_URL, } from "@repo/shared"
 import { Logo } from "../shared/logo"
-import { URLS } from "@repo/shared"
 
 const NAV_LINKS = [
   {
-    href: URLS.docs,
+    href: DOCS_SITE_URL,
     target: "_blank",
     title: "Docs",
   },
   {
-    href: URLS.github,
+    href: GITHUB_URL,
     title: "Github",
     target: "_blank",
     icon: <Icon icon={GithubIcon} fill="#fff" />

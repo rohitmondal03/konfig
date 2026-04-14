@@ -4,7 +4,7 @@ import { Icon } from "../shared/icon"
 import { Logo } from "../shared/logo"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "../ui/button"
-import { DOCS_SITE_URL, GITHUB_URL, URLS } from "@repo/shared"
+import { DOCS_SITE_URL, GITHUB_URL, WEB_APP_PATH } from "@repo/shared"
 
 const FOOTER_LINKS = [
   {
@@ -13,7 +13,7 @@ const FOOTER_LINKS = [
     target: "_blank"
   },
   {
-    href: URLS.dashboard,
+    href: WEB_APP_PATH.dashboard,
     title: "Dashboard",
     target: "_self"
   },
