@@ -1,14 +1,19 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle"
-import { lastLoginMethod, haveIBeenPwned, username, customSession } from "better-auth/plugins"
+import { lastLoginMethod, haveIBeenPwned, username, bearer } from "better-auth/plugins"
 import { schema, db } from "@repo/db"
-import { APP_NAME, LOGIN_MAX_PASSWORD_LENGTH, LOGIN_MIN_PASSWORD_LENGTH } from "@repo/shared";
+import { APP_NAME, ENV, LOGIN_MAX_PASSWORD_LENGTH, LOGIN_MIN_PASSWORD_LENGTH } from "@repo/shared";
 
 export const auth = betterAuth({
   appName: APP_NAME,
   database: drizzleAdapter(db, {
     provider: "pg",
-    schema: schema
+    schema: {
+      ...schema,
+      user: schema.userTable,
+      account: schema.accountTable,
+      session: schema.sessionTable,
+    },
   }),
   emailAndPassword: {
     enabled: true,
@@ -25,10 +30,10 @@ export const auth = betterAuth({
   },
   plugins: [
     lastLoginMethod(),
-    haveIBeenPwned(),
-    username(),
-    customSession(async ({ session }) => {
-      return { session }
+    haveIBeenPwned({
+      enabled: ENV === "production",
     }),
+    username(),
+    bearer(),
   ],
 });

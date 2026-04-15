@@ -1,6 +1,10 @@
 import { Router } from "express";
+import { eq } from "drizzle-orm";
+import { fromNodeHeaders } from "better-auth/node";
+import { db } from "@repo/db";
+import { userTable } from "@repo/db/src/db/schema";
 import { auth } from "../../auth/auth.config";
-import { AUTH_COOKIE_TOKEN } from "@repo/shared";
+import { DEFAULT_ERROR_MESSAGE } from "@repo/shared";
 
 
 const router = Router();
@@ -22,18 +26,11 @@ router.post("/login-user", async (req, res) => {
       }
     })
 
-    res.cookie(AUTH_COOKIE_TOKEN, token, {
-      httpOnly: true,
-      secure: false,
-      sameSite: "lax",
-    })
-
-    console.log(user, token);
-    res.status(200).json({ user, token });
+    return res.status(200).json({ user, token });
   }
   catch (error: any) {
-    console.log(error);
-    res.status(500).json({ error: error.body.message });
+    console.log("ERROR", error);
+    return res.status(500).json({ error: error.body.message });
   }
 })
 
@@ -58,12 +55,6 @@ router.post("/create-user", async (req, res) => {
       },
     })
 
-    res.cookie(AUTH_COOKIE_TOKEN, token, {
-      httpOnly: true,
-      secure: false,
-      sameSite: "lax",
-    })
-
     return res.status(200).json({ user, token });
   }
   catch (error: any) {
@@ -75,23 +66,62 @@ router.post("/create-user", async (req, res) => {
 // To check if session is present
 // API - "/auth/check-session"
 router.get("/check-session", async (req, res) => {
-  let headers = req.headers as any;
-  if (req.headers.authorization?.startsWith("Bearer ")) {
-    const token = req.headers.authorization.split(" ")[1];
-    headers = new Headers(req.headers as any);
-    headers.set("cookie", `better-auth.session_token=${token}`);
+  try {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
+
+    if (!session) {
+      return res.status(401).json({ message: "Session not present" });
+    }
+
+    return res.status(200).json(session);
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to read session" });
   }
+});
 
-  const session = await auth.api.getSession({
-    headers: headers,
-  })
 
-  if (!session) {
-    return res.status(401).json({ message: "Session not present" })
+// To get current user
+// API - "/auth/get-user"
+router.get("/get-user", async (req, res) => {
+  try {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
+
+    if (!session) {
+      return res.status(401).json({ error: "Session not available" });
+    }
+
+    const [{ username }] = await db
+      .select({ username: userTable.displayUsername })
+      .from(userTable)
+      .where(eq(userTable.id, session.user.id))
+      .limit(1);
+
+    return res.status(200).json({ ...session.user, username });
   }
+  catch (error) {
+    return res.status(500).json({ error: "Failed to read session" });
+  }
+});
 
-  return res.status(200).json(session);
-})
+
+// To logout current user
+// API - "/auth/logout"
+router.post("/logout", async (req, res) => {
+  try {
+    await auth.api.signOut({
+      headers: fromNodeHeaders(req.headers),
+    });
+
+    return res.status(200).json({ message: "Signed out successfully" });
+  }
+  catch (error) {
+    return res.status(500).json({ error: "Failed to sign out" });
+  }
+});
 
 
 export const authConfigsRoutes = router;

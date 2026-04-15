@@ -84,11 +84,3 @@ export function decryptText(encryptedText: string) {
 
   return decrypted.toString();
 }
-
-
-export function throwError(error: unknown) {
-  if (error instanceof Error) {
-    throw new Error(error.message);
-  }
-  throw new Error(DEFAULT_ERROR_MESSAGE);
-}

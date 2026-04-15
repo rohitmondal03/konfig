@@ -4,6 +4,7 @@ import { Outfit, Inter } from "next/font/google"
 import localFont from "next/font/local";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -35,11 +36,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("dark", "font-sans", inter.variable)}>
       <body className={`${outfit.className} bg-background text-foreground`}>
-        {children}
-        <Toaster
-          richColors
-          position="top-center"
-        />
+        <TooltipProvider>
+          {children}
+          <Toaster
+            richColors
+            position="top-center"
+          />
+        </TooltipProvider>
       </body>
     </html>
   );
