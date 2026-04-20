@@ -1,4 +1,5 @@
 import { pgTable, text, uuid, index, pgEnum, timestamp } from "drizzle-orm/pg-core";
+import { userTable } from "./auth-schema";
 
 export const CONFIG_ENVIRONMENT_ENUM = pgEnum("CONFIG_ENVIRONMENT_ENUM", ["production", "development"])
 
@@ -6,6 +7,8 @@ export const projectsTable = pgTable("projects", {
   id: uuid("id").defaultRandom().primaryKey(),
   projectId: uuid("project_id").defaultRandom().unique().notNull(),
   name: text("name").notNull(),
+  description: text("description"),
+  userId: text("user_id").notNull().references(() => userTable.id, { onDelete: "cascade" }),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 }, (table) => [
   index("idx_project_id_projects_table").on(table.projectId)

@@ -8,3 +8,16 @@ export type TUser = {
   username: string | null;
   image?: string | null | undefined;
 };
+
+export type TProject = {
+  projectId: string,
+  projectName: string,
+  projectDescription: string | null,
+  createdAt: Date,
+  userId: string,
+}
+
+export type TProjectWithAPI = TProject & {
+  keyId: string,
+  apiKey: string,
+}

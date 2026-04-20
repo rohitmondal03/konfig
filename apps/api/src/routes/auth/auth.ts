@@ -4,7 +4,6 @@ import { fromNodeHeaders } from "better-auth/node";
 import { db } from "@repo/db";
 import { userTable } from "@repo/db/src/db/schema";
 import { auth } from "../../auth/auth.config";
-import { DEFAULT_ERROR_MESSAGE } from "@repo/shared";
 
 
 const router = Router();

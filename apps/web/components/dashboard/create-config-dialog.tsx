@@ -9,7 +9,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,20 +19,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Settings01Icon } from "@hugeicons/core-free-icons";
-import { Icon } from "../shared/icon";
 
-export function CreateConfigDialog() {
-  const [open, setOpen] = React.useState(false);
+type TCreateConfigDialogProps = {
+  isOpen: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
+export function CreateConfigDialog({ isOpen, setOpen }: TCreateConfigDialogProps) {
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline" className="hidden sm:flex">
-          <Icon icon={Settings01Icon} size={16} className="mr-2" />
-          New Config
-        </Button>
-      </DialogTrigger>
+    <Dialog open={isOpen} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Add Configuration</DialogTitle>

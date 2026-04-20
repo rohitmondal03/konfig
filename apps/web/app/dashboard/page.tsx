@@ -1,4 +1,4 @@
-import { ComputerActivityIcon, Database01Icon, Timer02Icon } from "@hugeicons/core-free-icons";
+import { ComputerActivityIcon, Database01Icon, PlusSignIcon, Timer02Icon } from "@hugeicons/core-free-icons";
 import {
   Card,
   CardContent,
@@ -8,17 +8,17 @@ import {
 import { CreateProjectDialog } from "@/components/dashboard/create-project-dialog";
 import { Icon } from "@/components/shared/icon";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { CreateProjectDialogTriggerButton } from "@/components/dashboard/create-project-dialog-trigger";
 
 export default function DashboardPage() {
   return (
     <div className="space-y-4">
-      <div className="flex items-center">
+      <div className="flex items-center justify-between">
         <h1 className="text-lg font-semibold md:text-2xl">
           Overview
         </h1>
-        <div className="ml-auto flex items-center gap-2">
-          <CreateProjectDialog />
-        </div>
+        <CreateProjectDialogTriggerButton />
       </div>
 
       <Separator orientation="horizontal" />
@@ -76,7 +76,7 @@ export default function DashboardPage() {
           <p className="text-sm text-muted-foreground mb-4">
             Everything is running smoothly. To get started, try creating a new project.
           </p>
-          <CreateProjectDialog />
+          <CreateProjectDialogTriggerButton />
         </div>
       </div>
     </div>

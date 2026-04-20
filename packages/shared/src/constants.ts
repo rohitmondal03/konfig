@@ -12,6 +12,7 @@ export const DOCS_SITE_URL = "http://localhost:3001";
 export const GITHUB_URL = "https://github.com/rohitmondal03/konfig";
 
 export const WEB_APP_PATH = {
+  home: "/",
   dashboard: "/dashboard",
   login: "/login",
 }

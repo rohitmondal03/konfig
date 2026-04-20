@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { GridViewIcon, Settings01Icon, Folder01Icon, GlobalIcon } from "@hugeicons/core-free-icons";
+import { GridViewIcon, Settings01Icon, Folder01Icon } from "@hugeicons/core-free-icons";
 
 import {
   Sidebar as ShadcnSidebar,
@@ -30,11 +30,6 @@ const NAV_ITEMS = [
     title: "Projects",
     href: "/dashboard/projects",
     icon: Folder01Icon,
-  },
-  {
-    title: "Environments",
-    href: "/dashboard/environments",
-    icon: GlobalIcon,
   },
   {
     title: "Settings",

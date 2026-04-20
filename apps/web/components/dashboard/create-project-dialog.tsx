@@ -9,25 +9,46 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { PlusSignIcon } from "@hugeicons/core-free-icons";
+import { Textarea } from "@/components/ui/textarea";
+import { createProject } from "@/actions/projects.action";
+import { toast } from "sonner";
+import { Loading03FreeIcons } from "@hugeicons/core-free-icons";
 import { Icon } from "../shared/icon";
-import { Textarea } from "../ui/textarea";
 
-export function CreateProjectDialog() {
-  const [open, setOpen] = React.useState(false);
+type TCreateProjectDialogProps = {
+  isOpen: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export function CreateProjectDialog({ isOpen, setOpen }: TCreateProjectDialogProps) {
+  const [isLoading, setLoading] = React.useState(false);
+  const [formdata, setFormdata] = React.useState({
+    name: "",
+    description: "",
+  })
+
+  // To create a new project
+  async function createNewProject() {
+    setLoading(true);
+
+    await createProject({ projectDesc: formdata.description, projectName: formdata.name })
+      .then((data) => {
+        console.log(data);
+        toast.success("Project created successfully !!", {
+          description: `Project Name: ${data.projectName}`
+        })
+      })
+      .catch(() => {
+        toast.error("Error while creating new project")
+      })
+      .finally(() => setLoading(false))
+  }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button className="w-full sm:w-auto">
-          <Icon icon={PlusSignIcon} size={16} className="mr-2" />
-          New Project
-        </Button>
-      </DialogTrigger>
+    <Dialog open={isOpen} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Create New Project</DialogTitle>
@@ -35,24 +56,46 @@ export function CreateProjectDialog() {
             Add a new configuration project to your workspace.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input id="name" placeholder="e.g. backend-api" className="col-span-3" />
+        <form onSubmit={createNewProject}>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="name" className="text-right">
+                Name
+              </Label>
+              <Input
+                id="name"
+                placeholder="e.g. backend-api"
+                className="col-span-3"
+                value={formdata.name}
+                onChange={e => setFormdata(prev => ({ ...prev, name: e.target.value }))}
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="description" className="text-right">
+                Description
+              </Label>
+              <Textarea
+                id="description"
+                placeholder="Short description"
+                className="col-span-3"
+                value={formdata.name}
+                onChange={e => setFormdata(prev => ({ ...prev, description: e.target.value }))}
+              />
+            </div>
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="description" className="text-right">
-              Description
-            </Label>
-            <Textarea id="description" placeholder="Short description" className="col-span-3" />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit" onClick={() => setOpen(false)}>Save Project</Button>
-        </DialogFooter>
+          <DialogFooter>
+            <Button
+              type="submit"
+              disabled={isLoading}
+            >
+              {isLoading
+                ? <Icon icon={Loading03FreeIcons} size={4} className="animate-spin" />
+                : "Save Project"
+              }
+            </Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
-    </Dialog>
+    </Dialog >
   );
 }
