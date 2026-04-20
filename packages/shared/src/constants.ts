@@ -13,8 +13,9 @@ export const GITHUB_URL = "https://github.com/rohitmondal03/konfig";
 
 export const WEB_APP_PATH = {
   home: "/",
-  dashboard: "/dashboard",
   login: "/login",
+  dashboard: "/dashboard",
+  project: "/projects"
 }
 
 export const API_URL = "http://localhost:4000";

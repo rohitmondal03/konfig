@@ -15,14 +15,15 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { MoreVerticalIcon, Settings01Icon } from "@hugeicons/core-free-icons";
+import { MoreVerticalIcon, Settings01Icon, Trash as TrashIcon } from "@hugeicons/core-free-icons";
 import { Icon } from "@/components/shared/icon";
 import { ProjectConfigsDialog } from "./project-configs-dialog";
 
 type ProjectsTableProps = {
-  projects: TProject[];
+  projects: Omit<TProject, "userId">[];
 };
 
 export function ProjectsTable({ projects }: ProjectsTableProps) {
@@ -66,7 +67,7 @@ export function ProjectsTable({ projects }: ProjectsTableProps) {
                           <Icon icon={MoreVerticalIcon} size={16} />
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
+                      <DropdownMenuContent align="end" className="w-48 border border-zinc-600">
                         <DropdownMenuItem
                           onClick={() => {
                             setSelectedProjectId(project.projectId);
@@ -75,6 +76,11 @@ export function ProjectsTable({ projects }: ProjectsTableProps) {
                         >
                           <Icon icon={Settings01Icon} size={16} className="mr-2" />
                           Show Configs
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem variant="destructive">
+                          <Icon icon={TrashIcon} size={16} className="mr-2" />
+                          Delete Project
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -87,7 +93,7 @@ export function ProjectsTable({ projects }: ProjectsTableProps) {
       </div>
 
       <ProjectConfigsDialog
-        projectId={selectedProjectId}
+        projectId={selectedProjectId ? selectedProjectId : ""}
         isOpen={isConfigDialogOpen}
         onOpenChange={setIsConfigDialogOpen}
       />

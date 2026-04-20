@@ -8,7 +8,7 @@ import { CreateConfigDialogTriggerButton } from "./create-config-dialog-trigger"
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center gap-4 border-b border-secondary bg-background px-4">
+    <header className="sticky top-0 z-50 flex h-16 md:h-20 shrink-0 items-center gap-4 border-b border-secondary bg-background px-4">
       <div className="flex items-center gap-2">
         <SidebarTrigger className="-ml-1" />
       </div>
@@ -34,7 +34,7 @@ export function Header() {
         </Link>
       </nav>
 
-      <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
+      <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-8">
         <div className="ml-auto flex-1 sm:flex-initial">
           {/* We could place search here */}
         </div>

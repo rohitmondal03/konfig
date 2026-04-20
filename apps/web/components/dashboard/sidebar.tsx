@@ -15,7 +15,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarFooter,
-  useSidebar
 } from "@/components/ui/sidebar";
 import { Icon } from "../shared/icon";
 import { Logo } from "../shared/logo";
@@ -40,11 +39,10 @@ const NAV_ITEMS = [
 
 export function DashboardSidebar() {
   const pathname = usePathname();
-  const { state } = useSidebar();
 
   return (
     <ShadcnSidebar collapsible="offcanvas">
-      <SidebarHeader className="h-16 flex items-start- justify-center border-b pt-4">
+      <SidebarHeader className="h-16 md:h-20 flex items-start- justify-center border-b pt-4">
         <Logo mode="default" size="small" />
       </SidebarHeader>
 

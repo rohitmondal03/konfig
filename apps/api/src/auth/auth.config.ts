@@ -6,6 +6,10 @@ import { APP_NAME, ENV, LOGIN_MAX_PASSWORD_LENGTH, LOGIN_MIN_PASSWORD_LENGTH } f
 
 export const auth = betterAuth({
   appName: APP_NAME,
+  // session: {
+  //   expiresIn: 60 * 60 * 24 * 7, // 7 days
+  //   updateAge: 60 * 60 * 24 // 1 day (every 1 day the session expiration is updated)
+  // },
   database: drizzleAdapter(db, {
     provider: "pg",
     schema: {

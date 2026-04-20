@@ -52,8 +52,8 @@ export function UserNav() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative size-8 rounded-full">
-          <Avatar className="size-8">
+        <Button variant="ghost" className="relative size-10 rounded-full">
+          <Avatar className="size-10">
             <AvatarImage src={user?.image as string | undefined} alt="@rohit" />
             <AvatarFallback>{user?.name.charAt(0)}</AvatarFallback>
           </Avatar>
@@ -87,9 +87,8 @@ export function UserNav() {
           <DropdownMenuItem>New Team</DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={signout}>
+        <DropdownMenuItem onClick={signout} variant="destructive">
           Log out
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -10,7 +10,8 @@ export function CreateConfigDialogTriggerButton() {
   return (
     <>
       <Button
-        variant="outline"
+        variant="secondary"
+        size={"lg"}
         className="hidden sm:flex"
         onClick={() => setDialogOpen(prev => !prev)}
       >

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { SearchIcon, ArrowLeft01Icon } from "@hugeicons/core-free-icons";
 import { Icon } from "@/components/shared/icon";
+import { WEB_APP_PATH } from "@repo/shared";
 
 export default function NotFound() {
   return (
@@ -22,9 +23,9 @@ export default function NotFound() {
 
       <div className="pt-6 relative z-10">
         <Button asChild size="lg" className="h-12 px-8">
-          <Link href="/">
+          <Link href={WEB_APP_PATH.dashboard}>
             <Icon icon={ArrowLeft01Icon} size={18} className="mr-2" />
-            Back to Home
+            Back to Dashboard
           </Link>
         </Button>
       </div>

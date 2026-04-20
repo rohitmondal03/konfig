@@ -21,3 +21,11 @@ export type TProjectWithAPI = TProject & {
   keyId: string,
   apiKey: string,
 }
+
+export type TConfigs = {
+  projectId: string,
+  key: string,
+  value: string,
+  env: "production" | "development",
+  createdAt: Date,
+}

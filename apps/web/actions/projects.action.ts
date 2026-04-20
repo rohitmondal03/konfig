@@ -1,8 +1,9 @@
 "use server"
 
-import { API_URL } from "@repo/shared";
+import { API_URL, WEB_APP_PATH, WEB_SITE_URL } from "@repo/shared";
 import { getCurrentUser } from "./users.action"
 import { TProject, TProjectWithAPI } from "@/lib/types";
+import { revalidatePath } from "next/cache";
 
 
 // Get all configs of the current user
@@ -19,6 +20,7 @@ export async function createProject({ projectName, projectDesc }: { projectName:
     body: JSON.stringify({ name: projectName, description: projectDesc }),
     headers: {
       "Content-Type": "application/json",
+      "authorization": userId,
     }
   })
 
@@ -28,6 +30,7 @@ export async function createProject({ projectName, projectDesc }: { projectName:
     throw new Error(jsonResponse.error);
   }
 
+  revalidatePath(WEB_APP_PATH.dashboard + "/projects");
   return jsonResponse as TProjectWithAPI;
 }
 
@@ -51,5 +54,5 @@ export async function getAllProjectsOfUser() {
     throw new Error(jsonResponse.error);
   }
 
-  return jsonResponse as Omit<TProject, "userId">;
+  return jsonResponse as Omit<TProject, "userId">[];
 }

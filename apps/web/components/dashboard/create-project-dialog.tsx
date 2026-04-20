@@ -31,7 +31,8 @@ export function CreateProjectDialog({ isOpen, setOpen }: TCreateProjectDialogPro
   })
 
   // To create a new project
-  async function createNewProject() {
+  async function createNewProject(e: React.FormEvent) {
+    e.preventDefault();
     setLoading(true);
 
     await createProject({ projectDesc: formdata.description, projectName: formdata.name })
@@ -41,8 +42,10 @@ export function CreateProjectDialog({ isOpen, setOpen }: TCreateProjectDialogPro
           description: `Project Name: ${data.projectName}`
         })
       })
-      .catch(() => {
-        toast.error("Error while creating new project")
+      .catch((err: any) => {
+        toast.error("Error while creating new project", {
+          description: err.message,
+        })
       })
       .finally(() => setLoading(false))
   }
@@ -78,7 +81,7 @@ export function CreateProjectDialog({ isOpen, setOpen }: TCreateProjectDialogPro
                 id="description"
                 placeholder="Short description"
                 className="col-span-3"
-                value={formdata.name}
+                value={formdata.description}
                 onChange={e => setFormdata(prev => ({ ...prev, description: e.target.value }))}
               />
             </div>

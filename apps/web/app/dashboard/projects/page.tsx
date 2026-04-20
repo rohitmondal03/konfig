@@ -7,8 +7,8 @@ import { TProject } from "@/lib/types";
 export const dynamic = "force-dynamic";
 
 export default async function ProjectsPage() {
-  let projects: TProject[] = [];
-  
+  let projects: Omit<TProject, "userId">[] = [];
+
   try {
     const fetchedProjects = await getAllProjectsOfUser();
     // In case getAllProjectsOfUser returns a single object or needs mapping

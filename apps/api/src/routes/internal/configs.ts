@@ -7,6 +7,7 @@ const router = Router();
 
 
 // Get all "configs" from project ID
+// API - "/configs/get/:project_id"
 router.get("/get/:project_id", async (req, res) => {
   const { project_id: projectId } = req.params;
 
@@ -33,11 +34,12 @@ router.get("/get/:project_id", async (req, res) => {
     value: decryptText(config.value)
   }));
 
-  return res.json(configsWithDecryptedValues);
+  return res.status(200).json(configsWithDecryptedValues);
 })
 
 
 // Add new config
+// API - "/configs/create"
 router.post("/create", async (req, res) => {
   const body = req.body as {
     projectId: string,
@@ -99,7 +101,13 @@ router.post("/create", async (req, res) => {
     })
     .returning()
 
-  return res.status(200).json(configInserted);
+  return res.status(200).json({
+    projectId: configInserted.projectId,
+    key: configInserted.key,
+    value: configInserted.value,
+    env: configInserted.environment,
+    createdAt: configInserted.createdAt,
+  });
 })
 
 

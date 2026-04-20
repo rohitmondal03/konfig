@@ -71,6 +71,7 @@ export const signUpUser = async ({ email, name, password, username }: { email: s
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
+    // expires: 7 * 24 * 3600,  // 7 days
   });
 
   redirect(WEB_APP_PATH.dashboard);
@@ -102,6 +103,7 @@ export const loginUser = async ({ email, password }: { email: string, password: 
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
+    // expires: 7 * 24 * 3600,  // 7 days
   });
 
   redirect(WEB_APP_PATH.dashboard);

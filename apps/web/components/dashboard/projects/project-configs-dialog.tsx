@@ -1,5 +1,6 @@
 "use client";
 
+import type { TConfigs } from "@/lib/types";
 import { useEffect, useState } from "react";
 import {
   Dialog,
@@ -8,11 +9,10 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
-// Assumes there will be a server action or fetch later for this
-// import { getProjectConfigs } from "@/actions/configs.action";
+import { getProjectsConfig } from "@/actions/configs.action";
 
 type ProjectConfigsDialogProps = {
-  projectId: string | null;
+  projectId: string;
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
 };
@@ -23,23 +23,17 @@ export function ProjectConfigsDialog({
   onOpenChange,
 }: ProjectConfigsDialogProps) {
   const [isLoading, setIsLoading] = useState(false);
-  const [configs, setConfigs] = useState<any[]>([]);
+  const [configs, setConfigs] = useState<TConfigs[]>([]);
 
+  // To fetch project's configs
   useEffect(() => {
-    if (isOpen && projectId) {
-      // Mock fetching configs for now
-      setIsLoading(true);
-      // Simulating API call
-      setTimeout(() => {
-        setConfigs([
-          { id: "1", name: "DATABASE_URL", env: "production", updatedAt: new Date() },
-          { id: "2", name: "NEXT_PUBLIC_API_KEY", env: "development", updatedAt: new Date() },
-        ]);
-        setIsLoading(false);
-      }, 500);
-    } else {
-      setConfigs([]);
-    }
+    setIsLoading(true);
+
+    (async () => {
+      await getProjectsConfig({ projectId })
+        .then(data => setConfigs(data))
+        .finally(() => setIsLoading(false))
+    })()
   }, [isOpen, projectId]);
 
   return (
@@ -63,17 +57,17 @@ export function ProjectConfigsDialog({
               <div className="space-y-4">
                 {configs.map((config) => (
                   <div
-                    key={config.id}
+                    key={config.key}
                     className="flex flex-col justify-between rounded-lg border p-3 sm:flex-row sm:items-center"
                   >
                     <div className="flex flex-col space-y-1">
-                      <span className="font-medium font-mono text-sm">{config.name}</span>
+                      <span className="font-medium font-mono text-sm">{config.key}</span>
                       <span className="text-xs text-muted-foreground">
                         Environment: {config.env}
                       </span>
                     </div>
                     <div className="mt-2 text-xs text-muted-foreground sm:mt-0">
-                      Updated {config.updatedAt.toLocaleDateString()}
+                      Created {config.createdAt.toLocaleDateString()}
                     </div>
                   </div>
                 ))}
