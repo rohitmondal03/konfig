@@ -37,6 +37,7 @@ export const getCurrentUser = async () => {
   const jsonResponse = await response.json();
 
   if (response.status !== 200) {
+    console.log(jsonResponse);
     throw new Error(jsonResponse.error);
   }
 

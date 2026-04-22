@@ -1,15 +1,17 @@
-import { ComputerActivityIcon, Database01Icon, PlusSignIcon, Timer02Icon } from "@hugeicons/core-free-icons";
+import {
+  ComputerActivityIcon,
+  Database01Icon,
+  Timer02Icon
+} from "@hugeicons/core-free-icons";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { CreateProjectDialog } from "@/components/dashboard/create-project-dialog";
 import { Icon } from "@/components/shared/icon";
 import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import { CreateProjectDialogTriggerButton } from "@/components/dashboard/create-project-dialog-trigger";
+import { CreateProjectDialogTriggerButton } from "@/components/dashboard/shared/create-project-dialog-trigger";
 
 export default function DashboardPage() {
   return (

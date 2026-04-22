@@ -1,10 +1,9 @@
 "use client";
 
-import type { TConfigs, TProject } from "@/lib/types";
+import { EConfigEnv, TProject } from "@/lib/types";
 import * as React from "react";
 import { toast } from "sonner";
 import { Loader as LoaderIcon } from "@hugeicons/core-free-icons";
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -13,8 +12,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -22,9 +19,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Icon } from "@/components/shared/icon";
 import { createNewConfig } from "@/actions/configs.action"
 import { getAllProjectsOfUser } from "@/actions/projects.action";
-import { Icon } from "../shared/icon";
 
 type TCreateConfigDialogProps = {
   isOpen: boolean;
@@ -144,16 +144,16 @@ export function CreateConfigDialog({ isOpen, setOpen }: TCreateConfigDialogProps
               </Label>
               <Select
                 value={formdata.env}
-                onValueChange={val => setFormdata(prev => ({ ...prev, env: val as TConfigs["env"] }))}
+                onValueChange={val => setFormdata(prev => ({ ...prev, env: val as EConfigEnv }))}
               >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select Environment" />
                 </SelectTrigger>
                 <SelectContent className="border border-zinc-600">
-                  <SelectItem value="production">
+                  <SelectItem value={EConfigEnv.PRODUCTION}>
                     Production
                   </SelectItem>
-                  <SelectItem value="development">
+                  <SelectItem value={EConfigEnv.DEVELOPMENT}>
                     Development
                   </SelectItem>
                 </SelectContent>

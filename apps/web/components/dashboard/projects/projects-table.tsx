@@ -1,7 +1,14 @@
 "use client";
 
+import type { TProject } from "@/lib/types";
 import { useState } from "react";
-import { TProject } from "@/lib/types";
+import dynamic from "next/dynamic";
+import {
+  MoreVerticalIcon,
+  PlusSignIcon,
+  Settings01Icon,
+  Trash as TrashIcon
+} from "@hugeicons/core-free-icons";
 import {
   Table,
   TableBody,
@@ -18,9 +25,12 @@ import {
   DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { MoreVerticalIcon, Settings01Icon, Trash as TrashIcon } from "@hugeicons/core-free-icons";
 import { Icon } from "@/components/shared/icon";
-import { ProjectConfigsDialog } from "./project-configs-dialog";
+
+const ProjectConfigsDialog = dynamic(() => import("./project-configs-dialog")
+  .then(mod => mod.ProjectConfigsDialog))
+const CreateConfigDialog = dynamic(() => import("../shared/create-config-dialog")
+  .then(mod => mod.CreateConfigDialog))
 
 type ProjectsTableProps = {
   projects: Omit<TProject, "userId">[];
@@ -29,6 +39,7 @@ type ProjectsTableProps = {
 export function ProjectsTable({ projects }: ProjectsTableProps) {
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
   const [isConfigDialogOpen, setIsConfigDialogOpen] = useState(false);
+  const [isAddConfigDialogOpen, setAddConfigDialogOpen] = useState(false);
 
   return (
     <>
@@ -77,6 +88,10 @@ export function ProjectsTable({ projects }: ProjectsTableProps) {
                           <Icon icon={Settings01Icon} size={16} className="mr-2" />
                           Show Configs
                         </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setAddConfigDialogOpen(true)}>
+                          <Icon icon={PlusSignIcon} size={16} className="mr-2" />
+                          Add Config
+                        </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem variant="destructive">
                           <Icon icon={TrashIcon} size={16} className="mr-2" />
@@ -96,6 +111,10 @@ export function ProjectsTable({ projects }: ProjectsTableProps) {
         projectId={selectedProjectId ? selectedProjectId : ""}
         isOpen={isConfigDialogOpen}
         onOpenChange={setIsConfigDialogOpen}
+      />
+      <CreateConfigDialog
+        isOpen={isAddConfigDialogOpen}
+        setOpen={setAddConfigDialogOpen}
       />
     </>
   );

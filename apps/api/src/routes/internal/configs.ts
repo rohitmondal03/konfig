@@ -25,6 +25,7 @@ router.get("/get/:project_id", async (req, res) => {
       key: configsTable.key,
       value: configsTable.value,
       environment: configsTable.environment,
+      createdAt: configsTable.createdAt,
     })
     .from(configsTable)
     .where(eq(configsTable.projectId, projectId))

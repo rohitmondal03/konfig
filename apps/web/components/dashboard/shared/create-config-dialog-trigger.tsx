@@ -1,8 +1,11 @@
 import * as React from "react";
+import dynamic from "next/dynamic";
 import { Settings01Icon } from "@hugeicons/core-free-icons";
-import { Icon } from "../shared/icon";
-import { Button } from "../ui/button";
-import { CreateConfigDialog } from "./create-config-dialog";
+import { Icon } from "@/components/shared/icon";
+import { Button } from "@/components/ui/button";
+
+const CreateConfigDialog = dynamic(() => import("./create-config-dialog")
+  .then(mod => mod.CreateConfigDialog))
 
 export function CreateConfigDialogTriggerButton() {
   const [isDialogOpen, setDialogOpen] = React.useState(false);

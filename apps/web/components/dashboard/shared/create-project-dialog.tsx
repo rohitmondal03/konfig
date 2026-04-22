@@ -2,6 +2,8 @@
 
 import * as React from "react";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { Loading03FreeIcons } from "@hugeicons/core-free-icons";
 import {
   Dialog,
   DialogContent,
@@ -13,10 +15,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Icon } from "@/components/shared/icon"
 import { createProject } from "@/actions/projects.action";
-import { toast } from "sonner";
-import { Loading03FreeIcons } from "@hugeicons/core-free-icons";
-import { Icon } from "../shared/icon";
 
 type TCreateProjectDialogProps = {
   isOpen: boolean;

@@ -3,7 +3,6 @@ import { nanoid } from "nanoid";
 import crypto from "crypto";
 import {
   API_KEY_PREFIX,
-  DEFAULT_ERROR_MESSAGE,
   ENCRYPTION_ALGO,
   ENCRYPTION_SECRET,
   KEY_ID_LENGTH,
@@ -50,16 +49,9 @@ export function encryptText(text: string) {
   const SECRET = crypto.createHash("sha256").update(ENCRYPTION_SECRET as string).digest();
   const iv = crypto.randomBytes(16);
 
-  const cipher = crypto.createCipheriv(
-    ALGO,
-    SECRET,
-    iv
-  );
+  const cipher = crypto.createCipheriv(ALGO, SECRET, iv);
 
-  const encrypted = Buffer.concat([
-    cipher.update(text),
-    cipher.final()
-  ])
+  const encrypted = Buffer.concat([cipher.update(text), cipher.final()]);
 
   return iv.toString("hex") + ":" + encrypted.toString("hex");
 }
@@ -67,20 +59,20 @@ export function encryptText(text: string) {
 
 export function decryptText(encryptedText: string) {
   const ALGO = ENCRYPTION_ALGO as string;
-  const SECRET = ENCRYPTION_SECRET as string;
+  const SECRET = process.env.ENCRYPTION_SECRET as string;
 
-  const [iv, encrypted] = encryptedText.split(":");
+  const [ivHex, encryptedHex] = encryptedText.split(":");
 
-  const decipher = crypto.createDecipheriv(
-    ALGO,
-    SECRET,
-    iv,
-  );
+  const key = crypto.createHash("sha256").update(SECRET).digest();
+
+  const iv = Buffer.from(ivHex, "hex");
+
+  const decipher = crypto.createDecipheriv(ALGO, key, iv);
 
   const decrypted = Buffer.concat([
-    decipher.update(Buffer.from(encrypted, "hex")),
-    decipher.final()
-  ])
+    decipher.update(Buffer.from(encryptedHex, "hex")),
+    decipher.final(),
+  ]);
 
-  return decrypted.toString();
+  return decrypted.toString("utf8");
 }

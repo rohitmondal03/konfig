@@ -22,10 +22,15 @@ export type TProjectWithAPI = TProject & {
   apiKey: string,
 }
 
+export enum EConfigEnv {
+  PRODUCTION = "production",
+  DEVELOPMENT = "development",
+}
+
 export type TConfigs = {
   projectId: string,
   key: string,
   value: string,
-  env: "production" | "development",
+  environment: EConfigEnv,
   createdAt: Date,
 }

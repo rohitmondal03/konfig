@@ -29,7 +29,7 @@ export const AUTH_HEADER_PREFIX = "Bearer ";
 export const AUTH_COOKIE_TOKEN = "konfig_auth_token";
 
 export const ENCRYPTION_ALGO = "aes-256-cbc";
-export const ENCRYPTION_SECRET = process.env.ENCRYPTION_SECRET;
+export const ENCRYPTION_SECRET = process.env.ENCRYPTION_SECRET || "1234567890";
 
 export const LOGIN_MIN_PASSWORD_LENGTH = 8;
 export const LOGIN_MAX_PASSWORD_LENGTH = 16;

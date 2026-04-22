@@ -1,8 +1,8 @@
-import { getAllProjectsOfUser } from "@/actions/projects.action";
-import { ProjectsTable } from "@/components/dashboard/projects/projects-table";
-import { CreateProjectDialogTriggerButton } from "@/components/dashboard/create-project-dialog-trigger";
-import { Separator } from "@/components/ui/separator";
 import { TProject } from "@/lib/types";
+import { Separator } from "@/components/ui/separator";
+import { ProjectsTable } from "@/components/dashboard/projects/projects-table";
+import { CreateProjectDialogTriggerButton } from "@/components/dashboard/shared/create-project-dialog-trigger";
+import { getAllProjectsOfUser } from "@/actions/projects.action";
 
 export const dynamic = "force-dynamic";
 

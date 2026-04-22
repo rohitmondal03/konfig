@@ -1,7 +1,8 @@
 "use server"
 
 import type { TConfigs } from "@/lib/types";
-import { API_URL } from "@repo/shared"
+import { API_URL, WEB_APP_PATH } from "@repo/shared"
+import { revalidatePath } from "next/cache";
 
 
 // To get configs of a project
@@ -42,5 +43,6 @@ export async function createNewConfig({ projectId, env, key, value }: {
     throw new Error(jsonResponse.error);
   }
 
+  revalidatePath(WEB_APP_PATH.project);
   return jsonResponse as TConfigs;
 }

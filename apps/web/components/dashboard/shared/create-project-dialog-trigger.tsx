@@ -1,10 +1,13 @@
 "use client"
 
+import dynamic from "next/dynamic";
 import * as React from "react";
 import { PlusSignIcon } from "@hugeicons/core-free-icons";
-import { Button } from "../ui/button";
-import { Icon } from "../shared/icon";
-import { CreateProjectDialog } from "./create-project-dialog";
+import { Button } from "@/components/ui/button";
+import { Icon } from "@/components/shared/icon";
+
+const CreateProjectDialog = dynamic(() => import("./create-project-dialog")
+  .then(mod => mod.CreateProjectDialog))
 
 export function CreateProjectDialogTriggerButton() {
   const [isDialogOpen, setDialogOpen] = React.useState(false);

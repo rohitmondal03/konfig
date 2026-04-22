@@ -38,12 +38,12 @@ export function ProjectConfigsDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-[600px] space-y-4">
         <DialogHeader>
           <DialogTitle>Project Configurations</DialogTitle>
         </DialogHeader>
 
-        <div className="mt-4">
+        <div>
           {isLoading ? (
             <div className="flex h-32 items-center justify-center text-muted-foreground">
               Loading configs...
@@ -61,13 +61,21 @@ export function ProjectConfigsDialog({
                     className="flex flex-col justify-between rounded-lg border p-3 sm:flex-row sm:items-center"
                   >
                     <div className="flex flex-col space-y-1">
-                      <span className="font-medium font-mono text-sm">{config.key}</span>
-                      <span className="text-xs text-muted-foreground">
-                        Environment: {config.env}
-                      </span>
+                      <p className="font-medium font-mono text-sm">
+                        <span className="text-muted-foreground">KEY -</span> {" "}
+                        {config.key}
+                      </p>
+                      <p className="font-medium font-mono text-sm">
+                        <span className="text-muted-foreground">VALUE -</span> {" "}
+                        {config.value}
+                      </p>
+                      <p className="font-medium font-mono text-sm">
+                        <span className="text-muted-foreground">ENVIRONMENT -</span> {" "}
+                        {config.environment}
+                      </p>
                     </div>
                     <div className="mt-2 text-xs text-muted-foreground sm:mt-0">
-                      Created {config.createdAt.toLocaleDateString()}
+                      {new Date(config.createdAt).toDateString()}
                     </div>
                   </div>
                 ))}

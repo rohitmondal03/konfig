@@ -4,7 +4,7 @@ import Link from "next/link";
 import { UserNav } from "@/components/dashboard/user-nav";
 import { CreateConfigDialog } from "@/components/dashboard/create-config-dialog";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { CreateConfigDialogTriggerButton } from "./create-config-dialog-trigger";
+import { CreateConfigDialogTriggerButton } from "./shared/create-config-dialog-trigger";
 
 export function Header() {
   return (
